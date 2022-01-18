@@ -2,3 +2,5 @@
 *.db
 # Ignore MacOS tmps files
 .DS_Store
+# Ignore vscode tmps files
+.vscode
