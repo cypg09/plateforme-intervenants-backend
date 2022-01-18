@@ -18,9 +18,22 @@ Merci d'être au clair sur:
 La branche principale est `main`.
 
 Chaque personne qui veut contribuer doit : 
-- Créer une nouvelle branche : dev/{username}/{nom_de_la_fonctionnalite_a_ajouter}
+- Régulièrement mettre à jour son code :
+```
+git fetch
+```
+- Créer sur son ordinateur une nouvelle branche : dev/{username}/{nom_de_la_fonctionnalite_a_ajouter}
 Par exemple : dev/cypg09/login
-- Quand elle pense avoir fini son travail, créer une `merge request`, en mettant comme source sa branche et comme target `main`. [Plus d'information](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html).
+```
+git branch dev/{username}/{nom_de_la_fonctionnalite_a_ajouter}
+```
+- Envoyer sur le repository cette nouvelle branche :
+```
+git --set-upstream origin dev/{username}/{nom_de_la_fonctionnalite_a_ajouter}
+```
+- Faire des commits atomiques [Commits atomiques](https://letmegooglethat.com/?q=git+atomic+commits) et push régulièrement
+- Quand elle pense avoir fini son travail, créer une `merge request`, en mettant comme source sa branche et comme target `main`. [Plus d'information](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html). 
+- **NE PAS AUTO-APPROUVER LES MERGE REQUESTS, LAISSER LE CREATEUR DU PROJET APPROUVER LUI-MÊME, SINON CA N'A PLUS D'INTERÊT !**
 
 
 ### ✍️ Fichiers modifiables 
