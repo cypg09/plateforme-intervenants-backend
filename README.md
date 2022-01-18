@@ -7,7 +7,7 @@ Pour l'API, on va utiliser FastAPI :
 
 Attention, par défaut, il ne faut absolument rien modifier. La plupart de ces fichiers sont des fichiers de configuration, que j'ai déjà créés. 
 
-### Fichiers modifiables 
+### ✍️ Fichiers modifiables 
 
 Pour rajouter des fonctionnalités, voici les 3 seuls fichiers à modifier :
 - `models.py` : Fichier qui contient les définitions de toutes les tables de la base de données : on peut rajouter de nouvelles tables ou de nouvelles colonnes aux tables existantes ;
