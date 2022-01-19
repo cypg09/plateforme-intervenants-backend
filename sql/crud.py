@@ -5,6 +5,8 @@ from . import models, schemas
 from sql.database import get_db
 
 
+# Pas la peine de regarder ca
+
 def use_db(func):
     """
     Wrapper creating a connection to the database and closing it after the function execution
@@ -36,6 +38,8 @@ def delete_element_from_db(db: Session, element_to_delete):
     return
 
 
+# Le code commence ici 
+
 @use_db
 def get_user(db: Session, user_id: int):
     return db.query(models.User).filter(models.User.id == user_id).first()
@@ -56,4 +60,5 @@ def create_user(db, db_user):
 @use_db
 def get_users(db: Session, skip: int = 0, limit: int = 50000):
     return db.query(models.User).offset(skip).all()
+
 
