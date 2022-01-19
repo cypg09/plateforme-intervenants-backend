@@ -9,6 +9,8 @@ from sql.database import Base, get_db
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
+# Documentation about tables links with SQLAlchemy ORM : https://docs.sqlalchemy.org/en/14/orm/basic_relationships.html
+
 
 def get_password_hash(password):
     return pwd_context.hash(password)
@@ -18,21 +20,30 @@ class User(Base):
     __tablename__ = "user"
 
     id = Column(Integer, primary_key=True, index=True)
+    # Mandatory args
     username = Column(String(256), unique=True, index=True)
-    est_rh = Column(Boolean, nullable=False)
-    notation = Column(Float)
-    ba_id = relationship("BA") #TODO
+
+    #notation = Column(Float) #TODO a migrer dans RH
+
     prenom = Column(String(256))
     nom_de_famille = Column(String(256))
+
     campus = Column(String(256))
     promo = Column(String(256))
-    etudes_realisees = relationship("Etudes") #TODO
-    etudes_postulees = relationship("Etudes") #TODO
+
+    ba = relationship("BA", back_populates="user")
+    #etudes_realisees = relationship("Etudes") #TODO a migrer dans intervenant
+    #etudes_postulees = relationship("Etudes") #TODO a migrer dans intervenant
+    # End
 
     hashed_password = Column(String(256))
     account_creation_date = Column(DateTime, default=datetime.utcnow())
     ba_est_complet = Column(Boolean, default=False) #TODO
-    est_premium = Column(Boolean, defautl=False) #TODO
+    #est_premium = Column(Boolean, defautl=False) #TODO a migrer dans intervenant
+
+    # Relationships
+    ## One to one relationship between User and BA:
+    ba_id = Column(Integer, ForeignKey('ba.id'))
 
     def verify_password(self, plain_password):
         password_is_correct = pwd_context.verify(plain_password, self.hashed_password)
@@ -85,4 +96,4 @@ class BA(Base):
     photo_jpeg_path = Column(String(256), nullable=False)
     rib_pdf_path = Column(String(256), nullable=False)
 
-    user = relationship("User") #TODO
+    user = relationship("User", back_populates="ba")
