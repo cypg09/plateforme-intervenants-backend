@@ -38,7 +38,8 @@ class BA(Base):
     rib_pdf_path = Column(String(256), nullable=False)
     # End
 
-    # One-to-One relationship with User
+    # Relationships
+    ## One-to-One relationship with User
     user = relationship("User", back_populates="ba", uselist=False, lazy='select')
 
 
@@ -59,7 +60,6 @@ class User(Base):
 
     # Cela signifie qu'il faut donner en argument l'id du bulletin d'adhesion pour creer un User
     ba_id = Column(Integer, ForeignKey('ba.id')) 
-
     # End
 
     hashed_password = Column(String(256))
@@ -95,12 +95,14 @@ class Intervenant(Base):
     user_id = Column(Integer, ForeignKey('user.id'))
     # End
 
-    etudes_realisees = relationship("Etudes")
-    etudes_postulees = relationship("Etudes")
     est_premium = Column(Boolean, default=False)
 
+    # Relationships
     ## One to one relationship between User and Intervenant:
     user = relationship("User", back_populates="intervenant", lazy='joined')
+    ## Many to many relationship between Etude et Intervenant: 
+    etudes_postulees = relationship("Etude", back_populates="postulants", lazy='select')
+    etudes_realisees = relationship("Etude", back_populates="intervenants", lazy='select')
 
 
     def mettre_premium(self, premium_nouvel_etat: bool =True) -> bool:
@@ -134,6 +136,8 @@ class Etude(Base):
     nombre_max_candidats = Column(Integer, nullable=False)
     est_archivee = Column(Boolean, default=False)
 
+    # Relationships
+    ## Many to many relationship between Etude et Intervenant: 
     candidats = relationship("Intervenant") #TODO
     intervenants = relationship("Intervenant") #TODO
 
