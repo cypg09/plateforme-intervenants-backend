@@ -3,6 +3,12 @@
 Pour l'API, on va utiliser FastAPI : 
 [FastAPI](https://fastapi.tiangolo.com/).
 
+Tester l'API :
+```
+./run.sh
+http://localhost:8000
+```
+
 ## 🤲 Contribuer
 
 Attention, par défaut, il ne faut absolument rien modifier. La plupart de ces fichiers sont des fichiers de configuration, que j'ai déjà créés. 
