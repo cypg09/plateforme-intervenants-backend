@@ -1,4 +1,4 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DateTime, Float
+from sqlalchemy import Table, Boolean, Column, ForeignKey, Integer, String, DateTime, Float
 from sqlalchemy.orm import relationship
 from passlib.context import CryptContext
 from datetime import datetime
@@ -23,6 +23,16 @@ def get_password_hash(password):
 # 
 # Les arguments qui sont entre Mandatory args: et End sont OBLIGATOIRES pour créer l'objet
 
+# Association tables for many-to-many links : cf https://docs.sqlalchemy.org/en/14/orm/basic_relationships.html#many-to-many
+etudes_postulees_x_intervenants = Table('etudes_postulees_x_intervenants', Base.metadata,
+    Column('etudes_postulees_id', ForeignKey('etude.id')),
+    Column('intervenant_id', ForeignKey('intervenant.id'))
+)
+
+etudes_realisees_x_intervenants = Table('etudes_realisees_x_intervenants', Base.metadata,
+    Column('etudes_realisees_id', ForeignKey('etude.id')),
+    Column('intervenant_id', ForeignKey('intervenant.id'))
+)
 
 class BA(Base):
     __tablename__ = "ba"
@@ -101,9 +111,16 @@ class Intervenant(Base):
     ## One to one relationship between User and Intervenant:
     user = relationship("User", back_populates="intervenant", lazy='joined')
     ## Many to many relationship between Etude et Intervenant: 
-    etudes_postulees = relationship("Etude", back_populates="postulants", lazy='select')
-    etudes_realisees = relationship("Etude", back_populates="intervenants", lazy='select')
-
+    etudes_postulees = relationship(
+        "Etude",
+        secondary=etudes_postulees_x_intervenants,
+        back_populates="candidats"
+    )
+    etudes_realisees = relationship(
+        "Etude", 
+        secondary=etudes_realisees_x_intervenants,
+        back_populates="intervenants"
+    )
 
     def mettre_premium(self, premium_nouvel_etat: bool =True) -> bool:
         """
@@ -126,6 +143,7 @@ class Etude(Base):
     __tablename__ = "etude"
 
     id = Column(Integer, primary_key=True, index=True)
+    # Mandatory args :
     type_de_phase = Column(String(256), nullable=False)
     remuneration = Column(Float, nullable=False)
     date_signature = Column(DateTime, nullable=False)
@@ -134,15 +152,32 @@ class Etude(Base):
     incrementation = Column(String(256), nullable=False)
     lien_beequick = Column(String(256), nullable=False)
     nombre_max_candidats = Column(Integer, nullable=False)
+    # End
+
     est_archivee = Column(Boolean, default=False)
 
     # Relationships
     ## Many to many relationship between Etude et Intervenant: 
-    candidats = relationship("Intervenant") #TODO
-    intervenants = relationship("Intervenant") #TODO
+    candidats = relationship(
+        "Intervenant",
+        secondary=etudes_postulees_x_intervenants,
+        back_populates="etudes_postulees"
+    )
+    intervenants = relationship(
+        "Intervenant", 
+        secondary=etudes_realisees_x_intervenants,
+        back_populates="etudes_realisees"
+    )
 
-    def archiver_etude(self):
-        self.est_archivee = True
-        return
+    def archiver_etude(self, nouvel_etat_archivage: bool =True) -> bool:
+        """
+        Fonction qui toggle l'etat d'archivage : permet de marquer une etude archivee ou reciproque.
 
-
+        :param nouvel_etat_archivage: nouvel etat de la variable "est_archivee":
+            True si on veut que l'etude soit archivee,
+            False si on veut qu'elle ne le soit plus.
+            defaults to True
+        :type nouvel_etat_archivage: bool, optional
+        """
+        self.est_archivee = nouvel_etat_archivage
+        return self.est_archivee
