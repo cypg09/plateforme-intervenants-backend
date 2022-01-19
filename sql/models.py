@@ -31,3 +31,39 @@ class User(Base):
         self.hashed_password = get_password_hash(plain_password)
         return True
     
+
+class Etude(Base):
+    __tablename__ = "etude"
+
+    id = Column(Integer, primary_key=True, index=True)
+    type_de_phase = Column(String(256), nullable=False)
+    remuneration = Column(Float, nullable=False)
+    date_signature = Column(DateTime, nullable=False)
+    date_debut = Column(Datetime, nullable=False)
+    date_fin = Column(Datetime, nullable=False)
+    incrementation = Column(String(256), nullable=False)
+    lien_beequick = Column(String(256), nullable=False)
+    nombre_max_candidats = Column(Integer, nullable=False)
+    est_archivee = Column(Boolean, default=False)
+
+    candidats = relationship("User") #TODO
+
+    def archiver_etude(self):
+        self.est_archivee = True
+        return
+
+
+class BA(Base):
+    __tablename__ = "ba"
+
+    id = Column(Integer, primary_key=True, index=True)
+
+    adresse = Column(String(256), nullable=False)
+    ville_de_naissance = Column(String(256), nullable=False)
+    carte_vitale_pdf_path = Column(String(256), nullable=False)
+    carte_etudiant_pdf_path = Column(String(256), nullable=False)
+    piece_identite_pdf_path = Column(String(256), nullable=False)
+    photo_jpeg_path = Column(String(256), nullable=False)
+    rib_pdf_path = Column(String(256), nullable=False)
+
+    user = relationship("User") #TODO
