@@ -80,7 +80,7 @@ class User(Base):
     ## One to one relationship between User and BA:
     ba = relationship("BA", back_populates="user", lazy='select')
     ## One to one relationship between User and Intervenant:
-    intervenant = relationship("Intervenant", back_populates="user", useList=False, lazy='subquery')
+    intervenant = relationship("Intervenant", back_populates="user", uselist=False, lazy='subquery')
 
     def verify_password(self, plain_password):
         password_is_correct = pwd_context.verify(plain_password, self.hashed_password)
@@ -147,8 +147,8 @@ class Etude(Base):
     type_de_phase = Column(String(256), nullable=False)
     remuneration = Column(Float, nullable=False)
     date_signature = Column(DateTime, nullable=False)
-    date_debut = Column(Datetime, nullable=False)
-    date_fin = Column(Datetime, nullable=False)
+    date_debut = Column(DateTime, nullable=False)
+    date_fin = Column(DateTime, nullable=False)
     incrementation = Column(String(256), nullable=False)
     lien_beequick = Column(String(256), nullable=False)
     nombre_max_candidats = Column(Integer, nullable=False)

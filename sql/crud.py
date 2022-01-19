@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 import functools
 
-from . import models, schemas
+from sql import models
 from sql.database import get_db
 
 

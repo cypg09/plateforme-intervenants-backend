@@ -4,3 +4,5 @@
 .DS_Store
 # Ignore vscode tmps files
 .vscode
+# Ignore log/
+log/
