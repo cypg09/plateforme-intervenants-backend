@@ -7,7 +7,7 @@ from api.auth import oauth2_scheme, get_current_user
 
 
 api_etude = APIRouter(
-    prefix="/user"
+    prefix="/etude"
 )
 
 @api_etude.get("/nombreEtudes")
