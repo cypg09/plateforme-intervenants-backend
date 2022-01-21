@@ -62,3 +62,6 @@ def get_users(db: Session, skip: int = 0, limit: int = 50000):
     return db.query(models.User).offset(skip).all()
 
 
+@use_db
+def get_etude_by_id(db: Session, etude_id: int):
+    return db.query(models.Etude).filter_by(id=etude_id).first()
