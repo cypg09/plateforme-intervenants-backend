@@ -66,6 +66,11 @@ def get_users(db: Session, skip: int = 0, limit: int = 50000):
 def get_etude_by_id(db: Session, etude_id: int):
     return db.query(models.Etude).filter_by(id=etude_id).first()
 
+
 @use_db
 def get_nombre_etudes(db: Session):
     return db.query(models.Etude).filter_by(est_archivee=False).count()
+
+@use_db
+def get_etudes_non_archivees(db: Session, page_number: int = 1):
+    return db.query(models.Etude).filter_by(est_archivee=False).all().paginate(page=page_number, max_per_page=90)
