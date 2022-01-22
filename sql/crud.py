@@ -66,6 +66,18 @@ def get_users(db: Session, skip: int = 0, limit: int = 50000):
 def get_etude_by_id(db: Session, etude_id: int):
     return db.query(models.Etude).filter_by(id=etude_id).first()
 
+
 @use_db
 def get_nombre_etudes(db: Session):
     return db.query(models.Etude).filter_by(est_archivee=False).count()
+
+@use_db
+def get_etudes_non_archivees(db: Session, page: int =1, cards_per_page: int =30):
+    etudes_non_archivees = db.query(models.Etude).filter_by(est_archivee=False).all()
+    page = 1 if page < 1 else page
+    # borne inf: 0 si on est page 1, sinon 31, 61 etc
+    borne_inf = 0 if page == 1 else 1 + (page - 1) * cards_per_page 
+    # borne sup: 31, 61, ...
+    borne_sup = 1 + page * cards_per_page
+    etudes_non_archivees_paginees = etudes_non_archivees[borne_inf:borne_sup]
+    return etudes_non_archivees_paginees
