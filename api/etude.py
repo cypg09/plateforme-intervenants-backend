@@ -18,7 +18,7 @@ def get_nombre_etudes():
     }
 
 @api_etude.get("/cards")
-def get_cards(from_id: int =1, to_id: int =30):
+def get_cards(page: int =1, cards_per_page: int =30):
     """
     Fonction qui récupère les études non-archivées et rend parmi ces études les numéros from_id jusqu'à to_id
     Exemple de l'implementation dans crud.py: 
@@ -30,7 +30,7 @@ def get_cards(from_id: int =1, to_id: int =30):
     :param to_id: derniere etude recuperee, defaults to 30
     :type to_id: int, optional
     """
-    etudes = crud.get_etudes_non_archivees(from_id, to_id)
+    etudes = crud.get_etudes_non_archivees(page, cards_per_page)
     return [
         {
         "incrementation": etude.incrementation,
