@@ -6,3 +6,5 @@
 .vscode
 # Ignore log/
 log/
+# Ignore pyc
+*.pyc
