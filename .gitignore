@@ -8,3 +8,5 @@
 log/
 # Ignore pyc
 *.pyc
+# Ignore venv
+.venv/
