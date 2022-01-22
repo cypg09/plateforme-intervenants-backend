@@ -150,6 +150,7 @@ class Etude(Base):
     date_debut = Column(DateTime, nullable=False)
     date_fin = Column(DateTime, nullable=False)
     incrementation = Column(String(256), nullable=False)
+    nom_du_client = Column(String(256), nullable=False)
     lien_beequick = Column(String(256), nullable=False)
     nombre_max_candidats = Column(Integer, nullable=False)
     # End
@@ -181,3 +182,7 @@ class Etude(Base):
         """
         self.est_archivee = nouvel_etat_archivage
         return self.est_archivee
+    
+    def get_nombre_candidats_premium():
+        # TODO
+        return
