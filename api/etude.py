@@ -11,7 +11,7 @@ api_etude = APIRouter(
 )
 
 @api_etude.get("/nombreEtudes")
-def get_nombre_etudes(nombreEtudes: int):
+def get_nombre_etudes():
     nombre = crud.get_nombre_etudes()
     return {
         "nombreEtudes": nombre
