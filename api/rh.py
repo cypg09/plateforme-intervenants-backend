@@ -10,15 +10,15 @@ api_rh = APIRouter(
     prefix="/rh"
 )
 
-@api_etude.get("/nombreEtudes")
+@api_rh.get("/nombreEtudes")
 def get_nombre_etudes():
     nombre = crud.get_nombre_etudes()
     return {
         "nombreEtudes": nombre
     }
 
-@api_etude.get("/etudes")
-def get_cards(page: int =1, cards_per_page: int =30):
+@api_rh.get("/etudes/api")
+def get_cards(page: int =1, cards_per_page: int =30, est_archivee: bool =False):
     """
     Fonction qui récupère les études non-archivées et rend parmi ces études les numéros from_id jusqu'à to_id
     Exemple de l'implementation dans crud.py: 
@@ -30,7 +30,7 @@ def get_cards(page: int =1, cards_per_page: int =30):
     :param to_id: derniere etude recuperee, defaults to 30
     :type to_id: int, optional
     """
-    etudes = crud.get_etudes_non_archivees(page, cards_per_page)
+    etudes = crud.get_etudes(page, cards_per_page, est_archivee)
     return [
         {
         "incrementation": etude.incrementation,
