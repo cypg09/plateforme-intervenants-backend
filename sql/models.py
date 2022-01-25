@@ -144,8 +144,6 @@ class Etude(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     # Mandatory args :
-    type_de_phase = Column(String(256), nullable=False)
-    remuneration = Column(Float, nullable=False)
     date_signature = Column(DateTime, nullable=False)
     date_debut = Column(DateTime, nullable=False)
     date_fin = Column(DateTime, nullable=False)
@@ -153,22 +151,12 @@ class Etude(Base):
     nom_du_client = Column(String(256), nullable=False)
     lien_beequick = Column(String(256), nullable=False)
     nombre_max_candidats = Column(Integer, nullable=False)
+    #phases TODO
     # End
 
     est_archivee = Column(Boolean, default=False)
 
-    # Relationships
-    ## Many to many relationship between Etude et Intervenant: 
-    candidats = relationship(
-        "Intervenant",
-        secondary=etudes_postulees_x_intervenants,
-        back_populates="etudes_postulees"
-    )
-    intervenants = relationship(
-        "Intervenant", 
-        secondary=etudes_realisees_x_intervenants,
-        back_populates="etudes_realisees"
-    )
+   
 
     def archiver_etude(self, nouvel_etat_archivage: bool =True) -> bool:
         """
@@ -186,3 +174,24 @@ class Etude(Base):
     def get_nombre_candidats_premium():
         # TODO
         return
+
+class Phase(Base):
+    __tablename__="phase"
+    type_de_phase = Column(String(256), nullable=False)
+    date_debut = Column(DateTime, nullable=False)
+    date_fin = Column(DateTime, nullabe=False)
+    # Relationships
+    ## Many to many relationship between Etude et Intervenant: 
+    candidats = relationship(
+        "Intervenant",
+        secondary=etudes_postulees_x_intervenants,
+        back_populates="etudes_postulees"
+    )
+    intervenants = relationship(
+        "Intervenant", 
+        secondary=etudes_realisees_x_intervenants,
+        back_populates="etudes_realisees"
+    )
+    remuneration = Column(Float, nullable=False)
+    campus = Column(String(32), nullabe=False)
+    description = Column(String, nullable=False)
