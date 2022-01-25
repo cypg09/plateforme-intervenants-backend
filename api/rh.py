@@ -35,9 +35,9 @@ def get_cards(page: int =1, cards_per_page: int =30, est_archivee: bool =False):
         {
         "incrementation": etude.incrementation,
         "nomDuClient": etude.nom_du_client, 
-        "type": etude.type_de_phase,
-        "remuneration": etude.remuneration,
+        "type": phase.type_de_phase,
+        "remuneration": phase.remuneration,
         "dateDeSignature": etude.date_signature,
-        "nombreDePostulants": len(etude.candidats),
-        "nombreDePostulantsPremium": etude.get_nombre_candidats_premium()
-        } for etude in etudes]
+        "nombreDePostulants": len(phase.candidats),
+        "nombreDePostulantsPremium": phase.get_nombre_candidats_premium()
+        } for phase in etude.phases for etude in etudes]
