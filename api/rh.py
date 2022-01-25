@@ -21,7 +21,7 @@ def get_nombre_etudes():
 def get_cards(page: int =1, cards_per_page: int =30, est_archivee: bool =False):
     """
     Fonction qui récupère les études non-archivées et rend parmi ces études les numéros from_id jusqu'à to_id
-    Exemple de l'implementation dans crud.py: 
+    Exemple de l'implementation dans crud.py:
     etudes_non_archivees = db.query(.....).filter_by(est_archivee=False).all()
     etudes = etudes_non_archivees[from_id:to_id+1]
 
@@ -33,11 +33,36 @@ def get_cards(page: int =1, cards_per_page: int =30, est_archivee: bool =False):
     etudes = crud.get_etudes(page, cards_per_page, est_archivee)
     return [
         {
+        "id": phase.id,
         "incrementation": etude.incrementation,
-        "nomDuClient": etude.nom_du_client, 
+        "nomDuClient": etude.nom_du_client,
         "type": phase.type_de_phase,
         "remuneration": phase.remuneration,
         "dateDeSignature": etude.date_signature,
         "nombreDePostulants": len(phase.candidats),
         "nombreDePostulantsPremium": phase.get_nombre_candidats_premium()
         } for phase in etude.phases for etude in etudes]
+
+@api_rh.get("/getPostulants")
+def get_postulants(phase_id: int):
+    """
+    Recupere tous les postulants qui ont candidaté à une phase.
+    :param phase_id: id de la phase dont il faut recuperer les postulants
+    :type phase_id: int
+    :returns: list of dict
+
+    :return model:
+    [
+        {
+            "prenom": str,
+            "nom: str,
+            "campus": str,
+            "promo": str,
+            "nombreDeMissionsRealisees": int,
+            "email": str,
+            "phoneNumber": str
+        }
+    ]
+
+    """
+    pass
