@@ -6,8 +6,8 @@ from sql import crud
 from api.auth import oauth2_scheme, get_current_user
 
 
-api_etude = APIRouter(
-    prefix="/etude"
+api_rh = APIRouter(
+    prefix="/rh"
 )
 
 @api_etude.get("/nombreEtudes")
@@ -17,7 +17,7 @@ def get_nombre_etudes():
         "nombreEtudes": nombre
     }
 
-@api_etude.get("/cards")
+@api_etude.get("/etudes")
 def get_cards(page: int =1, cards_per_page: int =30):
     """
     Fonction qui récupère les études non-archivées et rend parmi ces études les numéros from_id jusqu'à to_id
