@@ -20,7 +20,7 @@ def get_password_hash(password):
 # 1. Creer le BA
 # 2. Creer l'User
 # 3. Creer l'Intervenant ou le RH
-# 
+#
 # Les arguments qui sont entre Mandatory args: et End sont OBLIGATOIRES pour créer l'objet
 
 # Association tables for many-to-many links : cf https://docs.sqlalchemy.org/en/14/orm/basic_relationships.html#many-to-many
@@ -69,7 +69,7 @@ class User(Base):
     promo = Column(String(256))
 
     # Cela signifie qu'il faut donner en argument l'id du bulletin d'adhesion pour creer un User
-    ba_id = Column(Integer, ForeignKey('ba.id')) 
+    ba_id = Column(Integer, ForeignKey('ba.id'))
     # End
 
     hashed_password = Column(String(256))
@@ -86,10 +86,10 @@ class User(Base):
         password_is_correct = pwd_context.verify(plain_password, self.hashed_password)
         return password_is_correct
 
-    def create_password(self, plain_password): 
+    def create_password(self, plain_password):
         self.hashed_password = get_password_hash(plain_password)
         return True
-    
+
     def marquer_ba_complet(self):
         self.ba_est_complet = True
         return
@@ -110,21 +110,21 @@ class Intervenant(Base):
     # Relationships
     ## One to one relationship between User and Intervenant:
     user = relationship("User", back_populates="intervenant", lazy='joined')
-    ## Many to many relationship between Etude et Intervenant: 
+    ## Many to many relationship between Etude et Intervenant:
     etudes_postulees = relationship(
         "Etude",
         secondary=etudes_postulees_x_intervenants,
         back_populates="candidats"
     )
     etudes_realisees = relationship(
-        "Etude", 
+        "Etude",
         secondary=etudes_realisees_x_intervenants,
         back_populates="intervenants"
     )
 
     def mettre_premium(self, premium_nouvel_etat: bool =True) -> bool:
         """
-        Fonction qui toggle l'etat du premium : permet de marquer un intervenant "intervenant premium" ou la reciproque. 
+        Fonction qui toggle l'etat du premium : permet de marquer un intervenant "intervenant premium" ou la reciproque.
 
         :param premium_nouvel_etat: nouvel etat de la variable "est_premium":
             True si on veut que le consultant devienne premium,
@@ -156,7 +156,7 @@ class Etude(Base):
 
     est_archivee = Column(Boolean, default=False)
 
-   
+
 
     def archiver_etude(self, nouvel_etat_archivage: bool =True) -> bool:
         """
@@ -170,28 +170,30 @@ class Etude(Base):
         """
         self.est_archivee = nouvel_etat_archivage
         return self.est_archivee
-    
+
     def get_nombre_candidats_premium():
         # TODO
         return
 
+"""
 class Phase(Base):
     __tablename__="phase"
     type_de_phase = Column(String(256), nullable=False)
     date_debut = Column(DateTime, nullable=False)
-    date_fin = Column(DateTime, nullabe=False)
+    date_fin = Column(DateTime, nullable=False)
     # Relationships
-    ## Many to many relationship between Etude et Intervenant: 
+    ## Many to many relationship between Etude et Intervenant:
     candidats = relationship(
         "Intervenant",
         secondary=etudes_postulees_x_intervenants,
         back_populates="etudes_postulees"
     )
     intervenants = relationship(
-        "Intervenant", 
+        "Intervenant",
         secondary=etudes_realisees_x_intervenants,
         back_populates="etudes_realisees"
     )
     remuneration = Column(Float, nullable=False)
-    campus = Column(String(32), nullabe=False)
+    campus = Column(String(32), nullable=False)
     description = Column(String, nullable=False)
+    """
